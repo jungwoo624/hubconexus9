@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AX 사회안전망 통합 시뮬레이터</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --danger: #ea4335;
+            --bg: #f8f9fa;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            padding: 20px;
+            color: #333;
+            margin: 0;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 36px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(30, 41, 59, 0.2);
+        }
+        .header h1 { margin: 0 0 8px; font-size: 1.8rem; font-weight: 700; }
+        .header p { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .panel h3 {
+            margin-top: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--primary);
+            background: #f8fafc;
+        }
+        .metric-title { font-size: 0.85rem; color: #666; margin-bottom: 6px; }
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+        .slider-group { margin: 20px 0; }
+        .slider-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+        .slider-group label span { color: var(--primary); font-weight: 700; }
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .sim-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+        .sim-button:hover { background: #1557b0; }
+        .sim-button:active { transform: scale(0.98); }
+
+        .chart-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .chart-box h3 {
+            margin-top: 0;
+            font-size: 1.05rem;
+            color: #1e293b;
+        }
+
+        .aihp-box {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            border: 1px solid #bae6fd;
+        }
+        .aihp-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        #ai-feedback { font-size: 0.95rem; line-height: 1.5; color: #1e293b; }
+        .divider {
+            border: 0;
+            border-top: 1px solid #e5e7eb;
+            margin: 22px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>AX 사회안전망: Future-Sim 실증 모델</h1>
+        <p>2026 인공지능 윤리 가이드라인 및 사업화 표준 지표</p>
+    </div>
+
+    <div class="dashboard">
+        <aside>
+            <div class="panel">
+                <h3>3대 핵심 지표 (실시간)</h3>
+                <div class="metric-card">
+                    <div class="metric-title">비판적 사고 (주체성)</div>
+                    <div class="metric-value" id="val-agency">-- %</div>
+                </div>
+                <div class="metric-card" style="border-color: var(--danger);">
+                    <div class="metric-title">역기능 대응력 (안전)</div>
+                    <div class="metric-value" id="val-safety" style="color: var(--danger);">-- %</div>
+                </div>
+                <div class="metric-card" style="border-color: var(--secondary);">
+                    <div class="metric-title">격차 해소율 (형평성)</div>
+                    <div class="metric-value" id="val-equity" style="color: var(--secondary);">-- %</div>
+                </div>
+
+                <hr class="divider">
+
+                <h3>알고리즘 가중치 조정 (w)</h3>
+                <div class="slider-group">
+                    <label>성과/효율 중심 (w<sub>eff</sub>): <span id="w1">50</span>%</label>
+                    <input type="range" id="slider-eff" min="0" max="100" value="50">
+                </div>
+                <div class="slider-group">
+                    <label>복지/형평 중심 (w<sub>eq</sub>): <span id="w2">50</span>%</label>
+                    <input type="range" id="slider-eq" min="0" max="100" value="50">
+                </div>
+                <button class="sim-button" onclick="simulate()">시뮬레이션 가동</button>
+            </div>
+        </aside>
+
+        <main>
+            <div class="chart-box">
+                <h3>계층별 사회적 자원 배분 결과</h3>
+                <canvas id="mainChart" height="280"></canvas>
+
+                <div class="aihp-box">
+                    <div class="aihp-icon">AIHP</div>
+                    <div id="ai-feedback">
+                        <strong>AIHP 리포트:</strong> 슬라이더를 조정하여 알고리즘을 설계해 보세요. 각 지표가 실시간으로 변동됩니다.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    const mainChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['상위 20%', '중상위', '중위', '중하위', '하위 20%'],
+            datasets: [{
+                label: '사회적 자원 배분 수치',
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: ['#1a73e8', '#4285f4', '#669df6', '#8ab4f8', '#aecbfa'],
+                borderRadius: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    const sliderEff = document.getElementById('slider-eff');
+    const sliderEq = document.getElementById('slider-eq');
+    const w1Label = document.getElementById('w1');
+    const w2Label = document.getElementById('w2');
+
+    sliderEff.addEventListener('input', function () {
+        w1Label.innerText = this.value;
+        simulate();
+    });
+    sliderEq.addEventListener('input', function () {
+        w2Label.innerText = this.value;
+        simulate();
+    });
+
+    function simulate() {
+        const wEff = parseInt(sliderEff.value, 10);
+        const wEq = parseInt(sliderEq.value, 10);
+
+        // S = w_eff * M + w_eq * N
+        const meritData = [95, 75, 50, 25, 5];
+        const needData = [5, 25, 50, 75, 95];
+
+        const results = meritData.map((m, i) => {
+            return Math.round((wEff / 100 * m) + (wEq / 100 * needData[i]));
+        });
+
+        const agency = Math.max(0, Math.round(100 - (Math.abs(wEff - 50) * 0.5)));
+        const safety = Math.max(0, Math.round(100 - (results[4] < 20 ? 40 : 0) - (results[3] < 25 ? 15 : 0)));
+        const equity = Math.max(0, Math.round(100 - (Math.max(...results) - Math.min(...results))));
+
+        document.getElementById('val-agency').innerText = agency + ' %';
+        document.getElementById('val-safety').innerText = safety + ' %';
+        document.getElementById('val-equity').innerText = equity + ' %';
+
+        mainChart.data.datasets[0].data = results;
+        mainChart.update();
+
+        const feedbackEl = document.getElementById('ai-feedback');
+        let feedback = '';
+        if (equity < 30) {
+            feedback = '<strong>[AIHP 경고]</strong> 불평등 지수가 매우 높습니다. 사회적 갈등 비용이 발생할 수 있습니다.';
+        } else if (safety < 70) {
+            feedback = '<strong>[AIHP 경고]</strong> 취약계층 안전망이 약화되었습니다. 역기능 대응력을 보완해야 합니다.';
+        } else if (agency < 70) {
+            feedback = '<strong>[AIHP 분석]</strong> 특정 가치에 너무 치우친 설계입니다. 인간의 비판적 검토가 더 필요합니다.';
+        } else {
+            feedback = '<strong>[AIHP 리포트]</strong> 매우 안정적인 AX 사회안전망 모델입니다. 지속 가능한 성장이 기대됩니다.';
+        }
+        feedbackEl.innerHTML = feedback;
+    }
+
+    simulate();
+</script>
+
+</body>
+</html>
