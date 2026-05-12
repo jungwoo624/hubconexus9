@@ -150,6 +150,100 @@
             border-top: 1px solid #e5e7eb;
             margin: 22px 0;
         }
+
+        .analysis-section {
+            background: white;
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        .analysis-section h2 {
+            margin: 0 0 6px;
+            font-size: 1.2rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .analysis-section .subtitle {
+            margin: 0 0 22px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 900px) {
+            .analysis-grid { grid-template-columns: 1fr; }
+        }
+        .analysis-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            background: #fafbfc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .analysis-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .analysis-card-title {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.98rem;
+        }
+        .grade-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            color: white;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        .grade-excellent { background: #16a34a; }
+        .grade-good      { background: #0ea5e9; }
+        .grade-caution   { background: #f59e0b; }
+        .grade-danger    { background: #dc2626; }
+
+        .analysis-score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1;
+        }
+        .analysis-score .unit { font-size: 0.95rem; color: #64748b; font-weight: 500; margin-left: 4px; }
+
+        .analysis-block { font-size: 0.88rem; line-height: 1.55; color: #334155; }
+        .analysis-block strong { color: #0f172a; }
+        .analysis-block .label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #475569;
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .summary-block {
+            margin-top: 22px;
+            padding: 20px 22px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+            border: 1px solid #fde68a;
+            border-radius: 14px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+        .summary-block strong { color: #92400e; }
     </style>
 </head>
 <body>
@@ -206,6 +300,65 @@
                     </div>
                 </div>
             </div>
+
+            <section class="analysis-section">
+                <h2>지표별 전문가 분석 리포트</h2>
+                <p class="subtitle">현재 시뮬레이션 결과에 대한 정책·윤리·사회학적 해석과 향후 과제입니다.</p>
+
+                <div class="analysis-grid">
+                    <article class="analysis-card" id="card-agency">
+                        <div class="analysis-card-head">
+                            <div class="analysis-card-title">① 비판적 사고 (주체성)</div>
+                            <span class="grade-badge" id="grade-agency">--</span>
+                        </div>
+                        <div class="analysis-score"><span id="score-agency">--</span><span class="unit">%</span></div>
+                        <div class="analysis-block">
+                            <div class="label">전문가 분석</div>
+                            <div id="analysis-agency">--</div>
+                        </div>
+                        <div class="analysis-block">
+                            <div class="label">향후 과제</div>
+                            <div id="task-agency">--</div>
+                        </div>
+                    </article>
+
+                    <article class="analysis-card" id="card-safety">
+                        <div class="analysis-card-head">
+                            <div class="analysis-card-title">② 역기능 대응력 (안전)</div>
+                            <span class="grade-badge" id="grade-safety">--</span>
+                        </div>
+                        <div class="analysis-score"><span id="score-safety">--</span><span class="unit">%</span></div>
+                        <div class="analysis-block">
+                            <div class="label">전문가 분석</div>
+                            <div id="analysis-safety">--</div>
+                        </div>
+                        <div class="analysis-block">
+                            <div class="label">향후 과제</div>
+                            <div id="task-safety">--</div>
+                        </div>
+                    </article>
+
+                    <article class="analysis-card" id="card-equity">
+                        <div class="analysis-card-head">
+                            <div class="analysis-card-title">③ 격차 해소율 (형평성)</div>
+                            <span class="grade-badge" id="grade-equity">--</span>
+                        </div>
+                        <div class="analysis-score"><span id="score-equity">--</span><span class="unit">%</span></div>
+                        <div class="analysis-block">
+                            <div class="label">전문가 분석</div>
+                            <div id="analysis-equity">--</div>
+                        </div>
+                        <div class="analysis-block">
+                            <div class="label">향후 과제</div>
+                            <div id="task-equity">--</div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="summary-block" id="summary-block">
+                    <strong>종합 권고:</strong> <span id="summary-text">시뮬레이션을 실행하면 종합 정책 권고가 표시됩니다.</span>
+                </div>
+            </section>
         </main>
     </div>
 </div>
@@ -300,6 +453,152 @@
                 feedback = '<strong>[AIHP 리포트]</strong> 매우 안정적인 AX 사회안전망 모델입니다. 지속 가능한 성장이 기대됩니다.';
             }
             feedbackEl.innerHTML = feedback;
+
+            updateExpertAnalysis({
+                wEff: wEff,
+                wEq: wEq,
+                agency: agency,
+                safety: safety,
+                equity: equity,
+                results: results
+            });
+        }
+
+        function gradeFor(value, thresholds) {
+            // thresholds = [excellent, good, caution] descending
+            if (value >= thresholds[0]) return { label: '매우 우수', cls: 'grade-excellent' };
+            if (value >= thresholds[1]) return { label: '양호',     cls: 'grade-good' };
+            if (value >= thresholds[2]) return { label: '주의 필요', cls: 'grade-caution' };
+            return { label: '위험 수준', cls: 'grade-danger' };
+        }
+
+        function setGrade(el, gradeInfo) {
+            el.className = 'grade-badge ' + gradeInfo.cls;
+            el.innerText = gradeInfo.label;
+        }
+
+        function updateExpertAnalysis(ctx) {
+            const agencyGrade = gradeFor(ctx.agency, [90, 75, 55]);
+            const safetyGrade = gradeFor(ctx.safety, [95, 80, 60]);
+            const equityGrade = gradeFor(ctx.equity, [80, 60, 40]);
+
+            setGrade(document.getElementById('grade-agency'), agencyGrade);
+            setGrade(document.getElementById('grade-safety'), safetyGrade);
+            setGrade(document.getElementById('grade-equity'), equityGrade);
+
+            document.getElementById('score-agency').innerText = ctx.agency;
+            document.getElementById('score-safety').innerText = ctx.safety;
+            document.getElementById('score-equity').innerText = ctx.equity;
+
+            const tilt = ctx.wEff > ctx.wEq ? '성과·효율' : (ctx.wEq > ctx.wEff ? '복지·형평' : '균형');
+            const tiltGap = Math.abs(ctx.wEff - ctx.wEq);
+
+            // ── ① 비판적 사고(주체성) ───────────────────────────
+            const agencyAnalysis = (function () {
+                if (ctx.agency >= 90) {
+                    return '가중치가 <strong>균형 상태(약 50:50)</strong>에 가까워, 알고리즘이 특정 가치에 종속되지 않습니다. 인간이 개입할 여지와 비판적 검토의 폭이 충분히 확보된 설계입니다.';
+                }
+                if (ctx.agency >= 75) {
+                    return '<strong>' + tilt + ' 방향으로 약간 기울어진</strong> 설계이지만, 다른 가치를 완전히 배제하지는 않습니다. 알고리즘 결정에 대한 인간 검토는 여전히 의미 있게 작동할 수 있는 구간입니다.';
+                }
+                if (ctx.agency >= 55) {
+                    return '<strong>' + tilt + ' 가치에 상당히 치우친</strong> 설계로, 자동화된 결정이 정당화되는 경향이 강해집니다. 알고리즘이 \'기본값\'으로 작동하면서 인간의 비판적 사고가 형식화될 위험이 있습니다.';
+                }
+                return '<strong>극단적 가중치(' + tilt + ' 편향)</strong>로 인해 알고리즘이 사실상 단일 가치 함수로 환원됩니다. 행정·복지 결정에서 인간 책임성이 모호해지고, 자동화 편향(Automation Bias)에 노출될 가능성이 매우 높습니다.';
+            })();
+
+            const agencyTask = (function () {
+                if (ctx.agency >= 90) {
+                    return '· 알고리즘 가중치 변경 이력을 공개해 <strong>설명가능성(XAI)</strong>을 제도화<br>· 시민 패널을 통한 정기적 윤리 감사';
+                }
+                if (ctx.agency >= 75) {
+                    return '· 결정의 근거를 시민에게 자동 통보하는 <strong>알고리즘 영향평가(AIA)</strong> 도입<br>· 가중치 편향 알람 임계치 설정';
+                }
+                if (ctx.agency >= 55) {
+                    return '· 자동 결정 비율 상한 도입(예: 고위험 영역 50% 이하)<br>· <strong>인간-루프-내(HITL)</strong> 재검토 프로세스 의무화';
+                }
+                return '· <strong>즉시 가중치 재조정</strong> 및 외부 윤리위원회 개입<br>· 자동화 의존도가 높은 결정의 일시 중지 및 수동 검토 전환';
+            })();
+
+            document.getElementById('analysis-agency').innerHTML = agencyAnalysis;
+            document.getElementById('task-agency').innerHTML = agencyTask;
+
+            // ── ② 역기능 대응력(안전) ─────────────────────────────
+            const bottom = ctx.results[4];
+            const lower = ctx.results[3];
+            const safetyAnalysis = (function () {
+                if (ctx.safety >= 95) {
+                    return '하위 20% 계층 배분(' + bottom + ')과 중하위 계층 배분(' + lower + ') 모두 사회안전망 임계선 위에 위치합니다. <strong>최소 보장(safety floor)</strong>이 구조적으로 작동하는 상태입니다.';
+                }
+                if (ctx.safety >= 80) {
+                    return '안전망은 작동하지만, 하위 계층에서 <strong>여유분(buffer)이 얇아지고 있습니다.</strong> 경기 충격이나 외부 위기가 발생하면 빠르게 임계선 아래로 내려갈 수 있는 구조입니다.';
+                }
+                if (ctx.safety >= 60) {
+                    return '취약계층 자원 배분이 사회안전망 권고 수준에 미달하고 있습니다. <strong>구조적 빈곤·고립의 자가증식</strong>이 발생할 수 있으며, 의료·주거·교육 접근성이 동시에 악화될 위험이 큽니다.';
+                }
+                return '하위계층 배분(' + bottom + ')이 위험 임계선 아래로 떨어진 <strong>안전망 붕괴 직전 상태</strong>입니다. 노숙·자살·범죄 등 사회적 비용이 직접 발생하며, AI 알고리즘이 \'사회적 배제 기제\'로 기능합니다.';
+            })();
+
+            const safetyTask = (function () {
+                if (ctx.safety >= 95) {
+                    return '· <strong>역기능 모니터링 KPI</strong> 분기별 공표<br>· 위기 시나리오 스트레스 테스트 정례화';
+                }
+                if (ctx.safety >= 80) {
+                    return '· 취약계층 <strong>자동 식별·선제 지원</strong> 모듈 도입<br>· 안전망 최소선(floor) 알고리즘 하드코딩';
+                }
+                if (ctx.safety >= 60) {
+                    return '· <strong>긴급 보충배분(top-up)</strong> 트리거 자동화<br>· 사회복지 데이터와 AI 연계 강화 및 부정확 데이터 보정';
+                }
+                return '· <strong>알고리즘 즉시 일시정지</strong> 및 수동 배분으로 전환<br>· 인권·복지 부처 합동 긴급 대응팀 가동';
+            })();
+
+            document.getElementById('analysis-safety').innerHTML = safetyAnalysis;
+            document.getElementById('task-safety').innerHTML = safetyTask;
+
+            // ── ③ 격차 해소율(형평성) ─────────────────────────────
+            const spread = Math.max.apply(null, ctx.results) - Math.min.apply(null, ctx.results);
+            const equityAnalysis = (function () {
+                if (ctx.equity >= 80) {
+                    return '계층 간 배분 격차(스프레드 ' + spread + ')가 매우 작아, <strong>분배 형평성이 구조적으로 보장</strong>되는 상태입니다. 사회적 신뢰와 정책 수용성이 높게 유지될 가능성이 큽니다.';
+                }
+                if (ctx.equity >= 60) {
+                    return '계층 간 일정한 격차(스프레드 ' + spread + ')는 존재하지만 사회 통합을 위협하는 수준은 아닙니다. <strong>성과 인센티브와 형평성의 절충</strong>이 적절히 작동하는 구간입니다.';
+                }
+                if (ctx.equity >= 40) {
+                    return '격차(스프레드 ' + spread + ')가 누적될 경우 <strong>세대 간 자산 이전·교육 격차</strong>로 고착화될 위험이 있습니다. 중장기적으로 사회 이동성이 떨어집니다.';
+                }
+                return '격차(스프레드 ' + spread + ')가 극단적입니다. <strong>지니계수 상승, 정치적 양극화, 사회 갈등 비용 폭증</strong>이 동반될 가능성이 높은 상태입니다.';
+            })();
+
+            const equityTask = (function () {
+                if (ctx.equity >= 80) {
+                    return '· 형평성 KPI를 <strong>장기 추세선</strong>으로 관리 (1회성 점검 X)<br>· 지역·세대 간 분포 격차도 함께 추적';
+                }
+                if (ctx.equity >= 60) {
+                    return '· 격차 확대 시 자동 경보를 트리거하는 <strong>형평성 모니터링 대시보드</strong> 구축<br>· 세대·지역별 분석 분해(disaggregation)';
+                }
+                if (ctx.equity >= 40) {
+                    return '· 누진적 재분배 가중치 도입 검토 (w<sub>eq</sub> +15~20%)<br>· <strong>세대 간 자산 이전세·교육 바우처</strong> 연계 정책 설계';
+                }
+                return '· 알고리즘 가중치 <strong>비상 재설계</strong> 및 외부 감사<br>· 양극화 완화를 위한 단기 재정 패키지 동시 가동';
+            })();
+
+            document.getElementById('analysis-equity').innerHTML = equityAnalysis;
+            document.getElementById('task-equity').innerHTML = equityTask;
+
+            // ── 종합 권고 ─────────────────────────────────────────
+            const minScore = Math.min(ctx.agency, ctx.safety, ctx.equity);
+            let summary;
+            if (minScore >= 80) {
+                summary = '현재 시뮬레이션은 <strong>지속 가능한 AX 사회안전망 모델</strong>로 평가됩니다. 단, ' + tilt + ' 쪽으로 ' + tiltGap + 'p 차이가 있으므로, 외부 충격(경기·인구·기술 변화)에 대한 정기적 스트레스 테스트가 권장됩니다.';
+            } else if (minScore >= 60) {
+                summary = '전반적으로 작동하지만 <strong>가장 낮은 지표가 사회안전망의 약한 고리</strong>가 됩니다. 현재 약한 고리 지표를 먼저 보강한 뒤, 다른 지표와의 trade-off를 재평가하는 2단계 정책 설계가 필요합니다.';
+            } else if (minScore >= 40) {
+                summary = '한 개 이상의 지표가 <strong>주의 수준에 진입</strong>했습니다. 가중치 조정만으로는 회복이 어려울 수 있으며, 알고리즘 외부에서의 보완 정책(재정·복지·법제)을 병행해야 합니다.';
+            } else {
+                summary = '<strong>구조적 위험 상태</strong>입니다. 알고리즘 가중치를 즉시 재설계하고, 외부 윤리위·감사기구의 개입과 함께 영향 받은 계층에 대한 보상·복원 정책을 동시 가동해야 합니다.';
+            }
+            document.getElementById('summary-text').innerHTML = summary;
         }
 
         sliderEff.addEventListener('input', simulate);
